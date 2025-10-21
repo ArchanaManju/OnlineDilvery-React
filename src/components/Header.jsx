@@ -9,19 +9,19 @@ import useOnlineStatus from "../utils/hooks/useOnlineStatus.js";
     const onlineStatus = useOnlineStatus()
 
     return (
-        <div className="header">   
-            <div className="logo-container">    
-                <img className="logo" alt="logo" src={AppLogo_url}/>
+        <div className="flex justify-between bg-orange-100 shadow-lg m-2 rounded-sm" >   
+            <div className="logo-container" >    
+                <img className="w-56 rounded-sm" alt="logo" src={AppLogo_url}/>
                 </div>
-            <div className="nav-items">    
-                <ul>
-                    <li>Online Status :{onlineStatus?  "🟢" : "🔴" }</li>
-                    <li><Link to ='/'>Home</Link></li>
+            <div className="flex items-center">    
+                <ul className="flex p-4 m-4" >
+                    <li className="px-4">Online Status :{onlineStatus?  "🟢" : "🔴" }</li>
+                    <li className="px-4"><Link to ='/'>Home</Link></li>
                     {/* dont use <a> anchor tag since it does entier page re load  
                     <li><a href="/about"/>About Us</li>*/}
-                    <li><Link to = '/about'>About Us</Link></li>
-                    <li><Link to = '/contact'>Contact Us</Link></li>
-                    <li>Cart</li>
+                    <li className="px-4"><Link to = '/about'>About Us</Link></li>
+                    <li className="px-4"><Link to = '/contact'>Contact Us</Link></li>
+                    <li className="px-4"><Link to = '/grocery'>Grocery</Link></li>
                     <button className="login" 
                     onClick={()=>{btnName==="Login"? setBtnName("Logout"):setBtnName("Login")}}>{btnName}</button>
                 </ul>

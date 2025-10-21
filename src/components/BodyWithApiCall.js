@@ -92,10 +92,10 @@ if (listOfResturants.length === 0) {
 }
     return listOfResturants.length === 0? <h1>No restaurants found</h1> : (
         <div className="body">
-            <div className="filter">
-                <div className="search">
-                <input type="text" className="search-box" placeholder="Search for restaurants" value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} />
-                <button className="search-btn" 
+            <div className="flex m-4 p-4 items-center gap-4">
+                <div className="search flex items-center ">
+                <input type="text" className="search-box border-2 placeholder-gray-400 rounded-sm " placeholder="Search for restaurants" value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} />
+                <button className="search-btn ml-2 px-4  border-2 bg-orange-100 rounded-sm"
                 onClick={()=> {
                     const filteredList = listOfResturants.filter((restaurant) => restaurant.info.name.toLowerCase().includes(searchText.toLowerCase()));
                     // By doing this we are updating the state variable ListOfResturants
@@ -107,7 +107,7 @@ if (listOfResturants.length === 0) {
                 }}>Search</button>
             </div>
                 <button
-                    className="filter-btn"
+                    className="bg-orange-100 h-7 px-4 rounded-sm border-2"
                     onClick={() => {
                         const filteredList = listOfResturants.filter(
                             (restaurant) => restaurant.info.avgRating > 4
@@ -118,11 +118,10 @@ if (listOfResturants.length === 0) {
                     Top Rated Restaurants
                 </button>
             </div>
-
-
             <div className="restaurant-list" style={{ display: "flex", flexWrap: "wrap" }}>
                 {filterRes.map((restaurant) => (
-    <RestaurantCard
+    <RestaurantCard 
+    className='flex-wrap'
       key={restaurant.info.id}
       resdata={restaurant}
       renderName={

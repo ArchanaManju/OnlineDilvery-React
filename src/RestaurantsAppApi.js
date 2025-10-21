@@ -17,7 +17,7 @@
 import ReactDOM from "react-dom/client";
 import Header  from "./components/Header";
 import BodyWithApiCall from "./components/BodyWithApiCall";
-
+import {lazy,Suspense} from "react"
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./Error";
@@ -25,6 +25,10 @@ import RestaurantMenu from "./components/RestaurantMenu";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 
+
+// lazy loading // ondemand loading 
+// lazy is named export from react , it takes callback function use the function import which takes path of the compoenet 
+const Grocery = lazy(()=> import('./components/Grocery'))
 
 const AppLayout = () => {
     return (
@@ -56,6 +60,12 @@ const appRouter = createBrowserRouter([
                 //dynamic routing
                 path:'/restaurant/:resId',
                 element:<RestaurantMenu/>
+            },
+
+            {
+                //dynamic routing
+                path:'/grocery',
+                element:<Suspense fallback={<h1>Loading....</h1>} > <Grocery/></Suspense>
             },
         ],
         errorElement:<Error/>
