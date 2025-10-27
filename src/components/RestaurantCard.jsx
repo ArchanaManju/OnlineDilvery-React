@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { ResLogo_url } from "../utils/constant";
-
+import LoggedInUserContext from "../utils/LoggedInUserContext.js"
 // this is when we need ony one prop we can use destructuring like this
 // const RestaurantCard = ({resdata}) => {
 //     console.log(resdata[0].info.name);
@@ -27,7 +28,7 @@ const RestLogoStyle = {
 const RestaurantCard = ({resdata,renderName}) => {
     // destructuring cuisines array to display as comma separated values
     const {name,cloudinaryImageId,cuisines,avgRating,sla} = resdata?.info; 
-
+ const user = useContext(LoggedInUserContext);
     return (
         <div className="restaurant-card m-4 p-4 w-[250px] bg-orange-200 rounded-sm hover:bg-orange-400 transition-colors duration-300">   
             <img className="restaurant-logo rounded-lg" style={RestLogoStyle} alt="restaurant-logo" src={ResLogo_url+cloudinaryImageId}/>
@@ -35,7 +36,23 @@ const RestaurantCard = ({resdata,renderName}) => {
             <h4>{cuisines.join(', ')}</h4>     
             <h4>{avgRating} stars</h4>
             <h4>{sla?.slaString}</h4>
+                               <h4 className="px-4 font-bold">{user.name}</h4>
         </div>
     );
 }
+
+// higher order compoenet 
+// input - RestaurantCard ==> RestaurantCardHighRating
+
+export const withHighRating =(RestaurantCard) =>{
+return (props)=>{
+    return( <div>
+        <label className="absolute bg-black text-white m-2 p-2 rounded-sm">
+            High Rating</label>
+            <RestaurantCard {...props}/>
+            </div>);
+    
+}
+}
+
 export default RestaurantCard;

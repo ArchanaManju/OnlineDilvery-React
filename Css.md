@@ -37,3 +37,7 @@ if device is greated than small device use this color
 
 we can configure theme as well 
 light and dark mode
+
+if we want to make size half the width of page 
+w-6/12 
+tailwind splits page into 12 section 

@@ -17,25 +17,48 @@
 import ReactDOM from "react-dom/client";
 import Header  from "./components/Header";
 import BodyWithApiCall from "./components/BodyWithApiCall";
-import {lazy,Suspense} from "react"
+import {lazy,Suspense, use} from "react"
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./Error";
 import RestaurantMenu from "./components/RestaurantMenu";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import LoggedInUserContext from "./utils/LoggedInUserContext";
 
-
+import { useState, useEffect } from "react";
 
 // lazy loading // ondemand loading 
 // lazy is named export from react , it takes callback function use the function import which takes path of the compoenet 
 const Grocery = lazy(()=> import('./components/Grocery'))
 
+
+
+
 const AppLayout = () => {
+const[userName, SetUserName] = useState();
+
+useEffect(() => {
+// api call to fetch the user data 
+const data ={ name: "Archana Manju"};
+SetUserName(data.name);
+}, []);
+
     return (
-        <div className="app">   
+        // To provide the context to entire app we need to wrap the entire app with provider of our user defined context
+        <LoggedInUserContext.Provider value={{
+            name: userName,
+            email: "  "  }}  SetUserName>
+        <div className="app">  
+       { /** to provide different value to header we can wrap only header with another provider */
+}
+               <LoggedInUserContext.Provider value={{
+            name: "Only Header User",
+            email: "  "  }} >
             <Header />
+            </LoggedInUserContext.Provider>
             <Outlet />
         </div>
+        </LoggedInUserContext.Provider>
     );
 }
 

@@ -19,6 +19,7 @@
 
 
 import React from "react";
+import LoggedInUserContext from "../utils/LoggedInUserContext";
 
 
 
@@ -45,7 +46,6 @@ class UserClass extends React.Component {
     console.log("componentDidMount - called after first render");
      const data =  await fetch("https://api.github.com/users/ArchanaManju")
     const json = await data.json();
-    console.log(json);
     this.setState({
       userInfo:json
     })
@@ -68,6 +68,7 @@ class UserClass extends React.Component {
           <h2>email:@ArchanaCambrdige</h2>
           <h3>Contact:1234567890</h3>
           <h4><img src={avatar_url} alt="avatar" style={{width:"100px"}}/></h4>
+          <div>LoggedIn User<LoggedInUserContext.Consumer>{(loggedInUser)=><h1>{loggedInUser.name}</h1>}</LoggedInUserContext.Consumer></div>
       </div>
     );
   } 

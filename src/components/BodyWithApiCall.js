@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import RestaurantCard from "./RestaurantCard";
+import React, { use, useContext, useEffect, useState } from "react";
+import RestaurantCard, {withHighRating} from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from '../utils/hooks/useOnlineStatus'
+import LoggedInUserContext from "../utils/LoggedInUserContext.js";
 
 const Body = () => {
     // We are learning how to update the list of restaurants on button click
@@ -46,11 +47,15 @@ const [listOfResturants, setListOfResturants] = useState([]);
 const [loading, setLoading] = useState(true);
 const [searchText, setSearchText] = useState("");
 const [filterRes, setfilterRes] = useState([]);
+// to demonstrate use of context provider and consumer
+const [loggedInUser, setUserName] = useContext(LoggedInUserContext);
+
+
+const RestaurantWithHighRating = withHighRating(RestaurantCard)
  // this compoent is re rendered after this useEffect is called
  // we will ftech the data from api inside useEffect
 useEffect(() => {
    fetchData()
-   console.log("useEffect called");
 }, []);
 // fetch is a inbuild function which is used to ftech data from api and it return promise
 // async await is used to handle promise
@@ -64,7 +69,6 @@ const fetchData = async () => {
     // using ? to check if the object is present or not to avoid undefined error
     //  optional chaining 
     const apiData= (json?.data?.cards[4]?.card.card?.gridElements?.infoWithStyle?.restaurants);
-console.log(apiData);
     setListOfResturants(apiData)
     // we will use this to maintain the original list of resturants so filter will happen only on this data
     // why we ened to add api value []  for filterRes?  , beacuse we are using this to dispaly in UI if we dont give defult value it will show emapty as set in useState when we load first time 
@@ -117,19 +121,29 @@ if (listOfResturants.length === 0) {
                 >
                     Top Rated Restaurants
                 </button>
+
+                <div className="search ml-4 font-bold">
+              
+                    <label className="px-2">UserName:</label>
+                          <input className="border border-black p-2" 
+                          value={loggedInUser}
+                          onChange={(e)=> setUserName(e.target.value)}></input>
+                </div>
             </div>
+
+            
             <div className="restaurant-list" style={{ display: "flex", flexWrap: "wrap" }}>
                 {filterRes.map((restaurant) => (
-    <RestaurantCard 
-    className='flex-wrap'
-      key={restaurant.info.id}
-      resdata={restaurant}
-      renderName={
-        <Link to={`/restaurant/${restaurant.info.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          {restaurant.info.name}
-        </Link>
+                restaurant.info.avgRating < 4.5 ?(<RestaurantCard 
+                className='flex-wrap'
+                key={restaurant.info.id}
+                resdata={restaurant}
+                renderName={
+                 <Link to={`/restaurant/${restaurant.info.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {restaurant.info.name}
+                 </Link>
       }
-    />
+    />):(<RestaurantWithHighRating  key={restaurant.info.id} resdata={restaurant}/>)
   ))}
             </div>
         </div>
