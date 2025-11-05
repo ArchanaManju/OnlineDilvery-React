@@ -1,4 +1,4 @@
-# NamasteReact
+# React
 
 A learning React project that demonstrates building a small restaurants listing app with:
 - React + React Router
