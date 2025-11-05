@@ -48,7 +48,7 @@ const [loading, setLoading] = useState(true);
 const [searchText, setSearchText] = useState("");
 const [filterRes, setfilterRes] = useState([]);
 // to demonstrate use of context provider and consumer
-const [loggedInUser, setUserName] = useContext(LoggedInUserContext);
+const { user, setUser } = useContext(LoggedInUserContext);
 
 
 const RestaurantWithHighRating = withHighRating(RestaurantCard)
@@ -126,8 +126,8 @@ if (listOfResturants.length === 0) {
               
                     <label className="px-2">UserName:</label>
                           <input className="border border-black p-2" 
-                          value={loggedInUser}
-                          onChange={(e)=> setUserName(e.target.value)}></input>
+                          value={user?.name || ''}
+                          onChange={(e) => setUser(prev => ({ ...prev, name: e.target.value }))}></input>
                 </div>
             </div>
 

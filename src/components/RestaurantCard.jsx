@@ -30,13 +30,14 @@ const RestaurantCard = ({resdata,renderName}) => {
     const {name,cloudinaryImageId,cuisines,avgRating,sla} = resdata?.info; 
  const user = useContext(LoggedInUserContext);
     return (
-        <div className="restaurant-card m-4 p-4 w-[250px] bg-orange-200 rounded-sm hover:bg-orange-400 transition-colors duration-300">   
+        <div className="restaurant-card m-4 p-4 w-[300px] bg-orange-200 rounded-sm hover:bg-orange-400 transition-colors duration-300">   
             <img className="restaurant-logo rounded-lg" style={RestLogoStyle} alt="restaurant-logo" src={ResLogo_url+cloudinaryImageId}/>
             <h3 className="font-bold py-2">{renderName ? renderName : name}</h3>
             <h4>{cuisines.join(', ')}</h4>     
             <h4>{avgRating} stars</h4>
             <h4>{sla?.slaString}</h4>
-                               <h4 className="px-4 font-bold">{user.name}</h4>
+            <h4 className="px-4 font-bold">{user.name}</h4>
+            
         </div>
     );
 }

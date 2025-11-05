@@ -21,9 +21,12 @@ import {lazy,Suspense, use} from "react"
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./Error";
+import Cart from "./components/Cart";
 import RestaurantMenu from "./components/RestaurantMenu";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import LoggedInUserContext from "./utils/LoggedInUserContext";
+import { Provider } from "react-redux";
+import appStore from "./redux/appStore";
 
 import { useState, useEffect } from "react";
 
@@ -35,30 +38,27 @@ const Grocery = lazy(()=> import('./components/Grocery'))
 
 
 const AppLayout = () => {
-const[userName, SetUserName] = useState();
+const [user, setUser] = useState({ name: "Guest", email: "" });
 
 useEffect(() => {
-// api call to fetch the user data 
-const data ={ name: "Archana Manju"};
-SetUserName(data.name);
+    // api call to fetch the user data 
+    const data = { name: "Archana Manju" };
+    setUser(prev => ({ ...prev, name: data.name }));
 }, []);
 
     return (
-        // To provide the context to entire app we need to wrap the entire app with provider of our user defined context
-        <LoggedInUserContext.Provider value={{
-            name: userName,
-            email: "  "  }}  SetUserName>
-        <div className="app">  
-       { /** to provide different value to header we can wrap only header with another provider */
-}
-               <LoggedInUserContext.Provider value={{
-            name: "Only Header User",
-            email: "  "  }} >
-            <Header />
-            </LoggedInUserContext.Provider>
-            <Outlet />
-        </div>
+    <>
+    {/* wrapping the entier app with redux provider to provide the store to entire app */}
+    <Provider store={appStore}>  
+    {/* context provide using  user context provider*/}
+        <LoggedInUserContext.Provider value={{ user, setUser }}>
+            <div className="app">
+                <Header />
+                <Outlet />
+            </div>
         </LoggedInUserContext.Provider>
+    </Provider>
+    </>
     );
 }
 
@@ -89,6 +89,11 @@ const appRouter = createBrowserRouter([
                 //dynamic routing
                 path:'/grocery',
                 element:<Suspense fallback={<h1>Loading....</h1>} > <Grocery/></Suspense>
+            },
+               {
+                //dynamic routing
+                path:'/cart',
+                element:<Cart/>
             },
         ],
         errorElement:<Error/>
